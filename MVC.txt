@@ -1,0 +1,110 @@
+MVC.txt  556
+
+ -디자인패턴-
+  
+ MVC 패턴 : 개발을 하기위해서 구조를 model,view,controller로 구분하여 개발
+            웹/모바일/프로그램에서 모두 사용
+
+ => 관심사의 분리(분업) => 좋은코드 (결과)를 생성하기 위해서
+ 
+ Model : 자바 파일(Plain Old Java Object) - 비지니스로직을 처리하는 파일(데이터 처리-디비 처리=> Pro페이지)
+ View : JSP 파일 - 화면을 구현하는 파일(정보 출력)
+ Controller : Servlet 파일 - 자바-JSP 연결하는 파일
+ 
+ 
+ 								 Front
+   요청[request]  ->  매핑  ->   Controller (Servlet)   <->  Model (Java) <-> DB
+                 (web.xml/어노테이션)    | |				 -Controller(Action)	
+                                       View (JSP)            -DAO  
+ 
+ 
+   실제주소 : 해당 파일이 있는 주소(경로) 
+     ex)  D://workspace_JSP7/MVC7/src/main/webapp/start.jsp
+   가상주소 : 해당 파일이 있는 가상의 주소
+     ex)  /webapp/start.jsp =>  /member
+     
+   * MVC 패턴에서는 가상주소를 사용한 페이지 이동
+     (가상주소) ./member.me  <=> /MVC7/member.me   
+     [./ => 프로젝트명]
+     (실제주소) ./member.jsp   ./member.css   <=>  /webapp/member.jsp  
+     [./ => webapp폴더]
+
+* 커넥션풀 : 디비 연결을 풀에다가 저장후 사용
+
+ [커넥션 풀 X]
+ 사용자 요청 -> 직접 디비연결(생성)  -> SQL 실행 -> 직접 디비연결 해제
+ 
+ [커넥션 풀 O]
+ 사용자 요청 -> 직접 디비연결X(생성x) -> 할당가능한 연결정보가 있는지 체크 -> pool [con][con][.][.][.]
+ 											1) 연결정보가 있을때
+ 											 	- 연결정보 객체를 빌려옴(객체 할당)
+ 											 	- SQL 실행
+ 											 	- 연결정보 객체를 반납 											 	
+ 											 	
+ 											2) 연결정보가 없을때
+ 												- 연결객체를 생성 or 대기
+ 												- 연결정보 객체를 빌려옴(객체 할당)
+ 											 	- SQL 실행
+ 											 	- 연결정보 객체를 반납 	
+
+
+
+	<Context>
+	 => 프로젝트
+	  <Resource  => 디비 연결데이터 
+	  	 name="jdbc/mvc"   리소스명 (외부에서 이름 호출)
+	  	 auth="Container"  자원관리자
+	  	 type="javax.sql.DataSource"  리소스 정보를 변경해서 사용하는 타입 
+	  	 driverClassName="com.mysql.cj.jdbc.Driver"	 드라이버 주소 
+	  	 username="root"   디비접속 아이디
+	  	 password="1234"   디비접속 비밀번호
+	  	 url="jdbc:mysql://localhost:3306/jspdb"  디비 접속주소
+	  	 maxWait="5000"   커넥션풀을 기다리는 시간  5s
+	  	 />  
+	</Context>
+	
+	
+	사용자 요청 -> web.xml -> Controller <-> Model(DAO) <-> DB
+								 ||
+								View
+	//게시판 만들기
+	
+	- 게시판 글쓰기 Create
+	- 게시판 목록 리스트 조회 Read
+	- 게시판 본문보기 Read
+	- 게시판 수정하기 Update
+	- 게시판 삭제하기 Delete
+	- 게시판 답글달기
+	- 게시판 첨부파일
+	
+	
+	
+	  
+  <!-- 한글 인코딩 처리설정 -->
+  <filter>
+  	<filter-name></filter-name>
+  	<filter-class></filter-class>
+  </filter>
+  
+  <filter-mapping>
+  	<filter-name></filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- 한글 인코딩 처리설정 -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+ 
+ 
+
+
